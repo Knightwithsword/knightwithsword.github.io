@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../partials/head.ejs') %>
+  <body>
+    <%- include('../partials/nav.ejs') %>
+
+    <div class="create-blog content">
+      <form action="/blogs">
+        <div
+          id="user-data"
+          data-id="<%= user.id %>"
+          data-email="<%= user.email %>"
+        >
+          Your post will be saved based on your ID that associated with your
+          email <%= user.email %>, so that other users cannot delete your posts.
+        </div>
+        <label for="title">Blog title:</label>
+        <input type="text" id="title" name="title" required />
+        <label for="snippet">Blog snippet:</label>
+        <input type="text" id="snippet" name="snippet" required />
+        <label for="body">Blog body:</label>
+        <textarea id="body" name="body" required></textarea>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+
+    <script>
+      const form = document.querySelector("form");
+      const blogError = document.querySelector(".blog.error");
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        // get the values
+        const title = form.title.value;
+        const snippet = form.snippet.value;
+        const body = form.body.value;
+
+        const userElement = document.getElementById("user-data");
+        const userData = {
+          id: userElement.getAttribute("data-id"),
+          email: userElement.getAttribute("data-email"),
+        };
+
+        const creator = userData.id;
+        console.log("user: ", userData.email);
+
+        const blogData = {
+          title,
+          creator,
+          snippet,
+          body,
+        };
+        try {
+          const res = await fetch("/blogs", {
+            method: "POST",
+            body: JSON.stringify(blogData),
+            headers: { "content-Type": "application/json" },
+          }).then((result) => {
+            if (result) {
+              location.assign("/");
+            }
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      });
+    </script>
+
+    <%- include('../partials/footer.ejs') %>
+  </body>
+</html>

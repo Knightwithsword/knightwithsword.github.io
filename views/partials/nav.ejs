@@ -1,0 +1,20 @@
+<nav>
+  <div class="site-title">
+    <a href="/"><h1>Ed Help</h1></a>
+    <p>A Student Website</p>
+  </div>
+  <ul>
+    <% if(user){ %>
+    <li>Welcome, <%= user.email %></li>
+    <li><a href="/">Articles</a></li>
+    <li><a href="/about">About</a></li>
+    <li><a href="/blogs/create">Write..</a></li>
+    <li><a href="/logout">Log out</a></li>
+    <% }else{ %>
+    <li><a href="/">Blogs</a></li>
+    <li><a href="/about">About</a></li>
+    <li><a href="/login">Log in</a></li>
+    <li><a href="/register" class="btn">Register</a></li>
+    <% } %>
+  </ul>
+</nav>
